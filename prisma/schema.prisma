@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+
+model Appeal {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())  @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  title       String
+  description String?
+  status      AppealStatusEnum @default(NEW)
+
+  completeSolution String?  @map("complete_solution")
+  cancelReason     String?  @map("cancel_reason")
+
+  @@map("appeals")
+}
+
+enum AppealStatusEnum {
+  NEW
+  IN_PROGRESS
+  COMPLETED
+  CANCELED
+}
